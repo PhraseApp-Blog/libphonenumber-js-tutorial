@@ -6,7 +6,55 @@
   <script src="https://unpkg.com/libphonenumber-js@1.9.6/bundle/libphonenumber-max.js"></script>
   <script src="app.js"></script>
   <title>Demo</title>
-  <h1> Tutorial for libphonenumber-js</h1>
-  <h3> Checkout the app.js file and developer console</h3>
+  <style>
+    .container {
+      margin: 50px;
+      width: 500px;
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+    }
+    .item {
+      min-width: 400px;
+      margin: 20px;
+      display: flex;
+      flex-flow: column;
+    }
+  </style>
 </head>
+<body>
+  <h1 style="text-align: center;"> Tutorial for libphonenumber-js</h1><br>
+ <div class="container">
+  <div class="item">
+    <h3> Input your phone number</h3>
+    <div>
+      <select id="countrySelect" onchange="changeCountry(this)">
+        <option value="IN">IN</option>
+        <option value="US">US</option>
+        <option value="GB">GB</option>
+        <option value="AU">AU</option>
+      </select>
+      <input type="text" id="phone" onkeyup="parseNo(this)" />
+    </div>
+    <h3> Output</h3>
+    <div class="output1"></div>
+  </div>
+  <div class="item">
+    <h3> Input text with phone numbers</h3>
+    <select id="countrySelect2" onchange="changeCountry2(this)">
+      <option value="IN">IN</option>
+      <option value="US">US</option>
+      <option value="GB">GB</option>
+      <option value="AU">AU</option>
+    </select>
+    <br>
+      <textarea rows="5" type="textarea" id="textbox" onkeyup="findPhoneNumber(this)"
+        value="For tech support call +7 (800) 555-35-35 internationally
+        or reach a local US branch at (213) 373-4253 ext. 1234." 
+      ></textarea>
+    <h3> Output</h3>
+    <div class="output2"></div>
+  </div>
+ </div>
+</body>
 </html>

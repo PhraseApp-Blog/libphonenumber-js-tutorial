@@ -1,55 +1,3 @@
-let numberObj1 = libphonenumber.parsePhoneNumber('9098765432', 'IN')
-let numberObj2 = libphonenumber.parsePhoneNumber('08212345654', 'IN')
-let numberObj3 = libphonenumber.parsePhoneNumber('+80030009009')
-
-console.log(numberObj1.format('NATIONAL'))
-console.log(numberObj1.format('INTERNATIONAL'))
-console.log(numberObj1.format('RFC3966'))
-console.log(numberObj1.format('IDD', {fromCountry: 'US'}))
-console.log(numberObj1.format('NATIONAL', {nationalPrefix: false}))
-
-
-
-console.log(numberObj1.getType())
-console.log(numberObj2.getType())
-console.log(numberObj3.getType())
-
-console.log(numberObj1.isEqual({number:"+919098765432"}))
-
-console.log(numberObj1.getURI())
-console.log(numberObj2.getURI())
-console.log(numberObj3.getURI())
-
-console.log(numberObj1.isNonGeographic())
-console.log(numberObj2.isNonGeographic())
-console.log(numberObj3.isNonGeographic())
-
-console.log(numberObj1.isPossible())
-console.log(numberObj2.isPossible())
-console.log(numberObj3.isPossible())
-
-console.log(libphonenumber.parseIncompletePhoneNumber('+7 800 555'))
-
-
-console.log(libphonenumber.formatIncompletePhoneNumber('+800300090'))
-console.log(libphonenumber.formatIncompletePhoneNumber('9876556', 'IN'))
-
-let text = `
-For tech support call +7 (800) 555-35-35 internationally
-or reach a local US branch at (213) 373-4253 ext. 1234.
-`
-console.log(libphonenumber.findPhoneNumbersInText(text, 'US'))
- 
-console.log('Is US supported?', libphonenumber.isSupportedCountry('US'))
-
-
-console.log('Supported Countries', libphonenumber.getCountries())
-
-console.log('ext prefix of US', libphonenumber.getExtPrefix('US'))
-console.log('ext prefix of UK', libphonenumber.getExtPrefix('GB'))
-console.log('ext prefix of AU', libphonenumber.getExtPrefix('IN'))
-
-
 let examples
 let xmlhttp = new XMLHttpRequest();
 let url = "https://unpkg.com/libphonenumber-js@1.9.6/examples.mobile.json";
@@ -63,32 +11,74 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
 
-console.log(libphonenumber.parseIncompletePhoneNumber('8 (800) 555'))
-console.log(libphonenumber.parseIncompletePhoneNumber('+7 800 555'))
-console.log(libphonenumber.formatIncompletePhoneNumber('8800555', 'RU'))
-console.log(libphonenumber.formatIncompletePhoneNumber('+7800555'))
-
 
 let mData = new libphonenumber.Metadata()
 console.log(mData)
 
 
-function changePhone() {
-  console.log('change')
+var country 
+setTimeout(() => {
+  country = document.getElementById("countrySelect").value;
+}, 1000)
+function changeCountry(e) {
+  console.log(e.value)
+  country = e.value
+  parseNo(document.getElementById('phone'))
+}
+var numberObjEvt
+function parseNo(e) {
+  numberObjEvt = libphonenumber.parsePhoneNumber(e.value, country)
+
+  document.querySelector('.output1').innerText = `
+  National Format: ${numberObjEvt.format('NATIONAL')}
+  International Format: ${numberObjEvt.format('INTERNATIONAL')}
+  RFC3966: ${numberObjEvt.format('RFC3966')}
+  IDD: ${numberObjEvt.format('IDD', {fromCountry: 'US'})}
+  National without Prefix: ${numberObjEvt.format('NATIONAL', {nationalPrefix: false})}
+  Type: ${numberObjEvt.getType()}
+  URI: ${numberObjEvt.getURI()}
+  Is Non Geographic: ${numberObjEvt.isNonGeographic()}
+  Is Possible: ${numberObjEvt.isPossible()}
+  Is Valid: ${numberObjEvt.isValid()}
+  Parse Incomplete Number: ${libphonenumber.parseIncompletePhoneNumber(e.value)}
+  Format Incomplete Number (without Country code): ${libphonenumber.formatIncompletePhoneNumber(e.value)}
+  Format Incomplete Number (with country code): ${libphonenumber.formatIncompletePhoneNumber(e.value, country)}
+  Is ${country} Supported: ${libphonenumber.isSupportedCountry(country)}
+  ext prefix of ${country}: ${libphonenumber.getExtPrefix(country)}
+  ext prefix of ${country}: ${libphonenumber.getExtPrefix(country)}
+  `
 }
 
-const asYouType = new libphonenumber.AsYouType('US')
-console.log('asyoutype', asYouType.input('2133734'))
-console.log('asyoutype', asYouType.getChars())
-console.log('asyoutype', asYouType.getTemplate())
+var country2
+setTimeout(() => {
+  country2 = document.getElementById("countrySelect2").value;
+  document.getElementById('textbox').value = 'For tech support call +7 (800) 555-35-35 internationally or reach a local US branch at (213) 373-4253 ext. 1234'
+  let val = libphonenumber.findPhoneNumbersInText(document.getElementById('textbox').value, country2)
+  displayValue(val)
+}, 1000)
 
-console.log('asyoutype', asYouType.input('+12133734'))
-console.log('asyoutype', asYouType.getChars())
-console.log('asyoutype', asYouType.getTemplate())
-function myFunction() {
-  let number = document.getElementById('phone').value
-  console.log('asyoutype', asYouType.input(number))
-  console.log('asyoutype', asYouType.getChars())
-  console.log('asyoutype', asYouType.getTemplate())
+function changeCountry2(e) {
+  console.log(e.value)
+  country2 = e.value
+  let val = libphonenumber.findPhoneNumbersInText(document.getElementById('textbox').value, country2)
+  displayValue(val)
+}
 
+function findPhoneNumber(e) {
+  let val = libphonenumber.findPhoneNumbersInText(e.value, country2)
+  displayValue(val)
+}
+
+function displayValue(value) {
+  console.log(value)
+  let text = ''
+  for(let i = 0; i < value.length; i++) {
+    text += `
+    country: ${value[i].number.country}
+    countryCallingCode: ${value[i].number.countryCallingCode}
+    nationalNumber: ${value[i].number.nationalNumber}
+    number: ${value[i].number.number}
+    `
+  }
+  document.querySelector('.output2').innerText = text
 }
