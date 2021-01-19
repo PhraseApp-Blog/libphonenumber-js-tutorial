@@ -13,15 +13,22 @@ xmlhttp.send();
 
 
 let mData = new libphonenumber.Metadata()
-console.log(mData)
-
+let countryListHTML
+function fetchCountries() {
+ let countries = libphonenumber.getCountries()
+ for( let i = 0; i < countries.length; i++) {
+  countryListHTML+= `<option value="${countries[i]}" >${countries[i]}</option>` 
+ }
+}
+fetchCountries()
 
 var country 
 setTimeout(() => {
-  country = document.getElementById("countrySelect").value;
+ document.getElementById("countrySelect").innerHTML = countryListHTML
+ document.getElementById("countrySelect2").innerHTML = countryListHTML
+country = document.getElementById("countrySelect").value;
 }, 1000)
 function changeCountry(e) {
-  console.log(e.value)
   country = e.value
   parseNo(document.getElementById('phone'))
 }
@@ -37,9 +44,9 @@ function parseNo(e) {
   National without Prefix: ${numberObjEvt.format('NATIONAL', {nationalPrefix: false})}
   Type: ${numberObjEvt.getType()}
   URI: ${numberObjEvt.getURI()}
-  Is Non Geographic: ${numberObjEvt.isNonGeographic()}
-  Is Possible: ${numberObjEvt.isPossible()}
-  Is Valid: ${numberObjEvt.isValid()}
+  Non Geographic: ${numberObjEvt.isNonGeographic()}
+  Possible: ${numberObjEvt.isPossible()}
+  Valid: ${numberObjEvt.isValid()}
   Parse Incomplete Number: ${libphonenumber.parseIncompletePhoneNumber(e.value)}
   Format Incomplete Number (without Country code): ${libphonenumber.formatIncompletePhoneNumber(e.value)}
   Format Incomplete Number (with country code): ${libphonenumber.formatIncompletePhoneNumber(e.value, country)}
@@ -58,7 +65,6 @@ setTimeout(() => {
 }, 1000)
 
 function changeCountry2(e) {
-  console.log(e.value)
   country2 = e.value
   let val = libphonenumber.findPhoneNumbersInText(document.getElementById('textbox').value, country2)
   displayValue(val)
@@ -70,7 +76,6 @@ function findPhoneNumber(e) {
 }
 
 function displayValue(value) {
-  console.log(value)
   let text = ''
   for(let i = 0; i < value.length; i++) {
     text += `
