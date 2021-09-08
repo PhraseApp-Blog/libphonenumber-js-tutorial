@@ -1,54 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://unpkg.com/libphonenumber-js@1.9.6/bundle/libphonenumber-max.js"></script>
+  <script
+    src="https://unpkg.com/libphonenumber-js@1.9.6/bundle/libphonenumber-max.js"></script>
+  <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
   <script src="app.js"></script>
   <title>Demo</title>
   <style>
-    .container {
-      margin: 50px;
-      width: 500px;
-      display: flex;
-      justify-content: space-around;
+    .main-container {
+      margin: 10px 0;
+      min-width: 500px;
+      padding: 10px;
       width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
     }
+
     .item {
-      min-width: 400px;
+      min-width: 600px;
       margin: 20px;
       display: flex;
       flex-flow: column;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 20px;
+
+      @media screen and (max-width: 768px) {
+        min-width: auto;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+
+      .main-container,
+      .item {
+        min-width: auto;
+        width: 100%;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1 style="text-align: center;"> Tutorial for libphonenumber-js</h1><br>
- <div class="container">
-  <div class="item">
-    <h3> Input your phone number</h3>
-    <div>
-      <select id="countrySelect" onchange="changeCountry(this)">
-        <option value="IN">IN</option>
-      </select>
-      <input type="text" id="phone" onkeyup="parseNo(this)" />
+  <h1 class="text-center mt-4"> Tutorial for libphonenumber-js</h1><br>
+  <div class="main-container">
+    <div class="item card">
+      <h3 class="mb-4"> Input your phone number</h3>
+      <div class="d-flex">
+        <select id="countrySelect" class="form-control mr-3" style="width:80px"
+          onchange="changeCountry(this)">
+          <option value="IN">IN</option>
+        </select>
+        <input type="text" class="form-control" id="phone"
+          onkeyup="parseNo(this)" autocomplete="off" />
+      </div>
+      <h3 class="mt-4 mb-4"> Output</h3>
+      <div class="output1"></div>
     </div>
-    <h3> Output</h3>
-    <div class="output1"></div>
+    <div class="item card">
+      <h3 class="mb-4"> Parse text with phone numbers</h3>
+      <div class="d-flex align-items-center">
+        <select id="countrySelect2" class="form-control mr-4"
+          style="width: 80px" onchange="changeCountry2(this)">
+          <option value="IN">IN</option>
+        </select>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value=""
+            id="country-required" onchange="updateCountryRequired(this)">
+          <label class="form-check-label" for="country-required">
+            Use Country Code for parsing
+          </label>
+        </div>
+      </div>
+      <br>
+      <textarea rows="5" type="textarea" id="textbox" class="form-control"
+        onkeyup="findPhoneNumber(this)"
+        value=""></textarea>
+      <h3 class="mt-4"> Output</h3>
+      <div class="output2"></div>
+    </div>
   </div>
-  <div class="item">
-    <h3> Input text with phone numbers</h3>
-    <select id="countrySelect2" onchange="changeCountry2(this)">
-      <option value="IN">IN</option>
-    </select>
-    <br>
-      <textarea rows="5" type="textarea" id="textbox" onkeyup="findPhoneNumber(this)"
-        value="For tech support call +7 (800) 555-35-35 internationally
-        or reach a local US branch at (213) 373-4253 ext. 1234." 
-      ></textarea>
-    <h3> Output</h3>
-    <div class="output2"></div>
-  </div>
- </div>
 </body>
+
 </html>
